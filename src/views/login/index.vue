@@ -2,12 +2,12 @@
   <div class="login-container">
     <el-card class="box-card">
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
-        <img
+        <!-- <img
           class="logo"
           alt="Logo sapa-jds"
           src="../../assets/img/logo_jds.png"
           style="width:80%;margin-bottom:40px"
-        >
+        > -->
 
         <el-form-item prop="username">
           <span class="svg-container">
