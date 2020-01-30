@@ -195,7 +195,8 @@ export default {
 
 $bg:#283443;
 $light_gray:#f4f4f4;
-$cursor: #fff;
+$cursor: #000000;
+$white: #ffffff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
@@ -230,7 +231,7 @@ $cursor: #fff;
       caret-color: $cursor;
 
       &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $light_gray inset !important;
+        box-shadow: 0 0 0px 1000px $white inset !important;
         -webkit-text-fill-color: $bg !important; //$bg warna inputan
       }
     }
@@ -251,6 +252,7 @@ $cursor: #fff;
 $bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#f4f4f4;
+$white:#ffffff;
 
 .login-container {
   min-height: 100%;
