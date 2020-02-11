@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export default function fetchListDivisi(params) {
+export function fetchListDivisi(params) {
   return request({
     url: '/mock/satuan-kerja/',
     method: 'get',
