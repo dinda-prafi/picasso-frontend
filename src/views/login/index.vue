@@ -73,6 +73,8 @@ export default {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
         callback(new Error('Username harus diisi'))
+      // if (value.length < 1) {
+      //   callback(new Error('Username harus diisi'))
       } else {
         callback()
       }
@@ -80,6 +82,8 @@ export default {
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error('Kata sandi harus diisi'))
+      // if (value.length < 1) {
+      //   callback(new Error('Kata sandi harus diisi'))
       } else {
         callback()
       }
@@ -154,6 +158,7 @@ export default {
               this.loading = false
             })
         } else {
+          alert('Username atau kata sandi salah')
           console.log('error submit!!')
           return false
         }
