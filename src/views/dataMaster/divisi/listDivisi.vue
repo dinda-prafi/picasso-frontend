@@ -1,7 +1,9 @@
 <template>
   <div class="app-container">
-    <div class="filter-container" style="float: right">
-      <el-input v-model="search" placeholder="Cari Divisi" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+    <div class="filter-container">
+      <search
+        :value-search="listQuery"
+      />
       <el-button class="filter-item" type="primary" @click="handleFilter">
         Cari
       </el-button>
@@ -14,7 +16,6 @@
       class="table-divisi"
       :data="listDivisi"
       border
-      style="width: 100%"
     >
       <el-table-column
         align="center"
@@ -49,7 +50,7 @@
           <el-button
             size="mini"
             icon="el-icon-edit"
-            @click="handleEdit(scope)"
+            @click="handleEdit(scope.row.id)"
           />
           <el-button
             size="mini"
@@ -59,7 +60,7 @@
           <el-button
             size="mini"
             icon="el-icon-view"
-            @click="handleView(scope.row.id)"
+            @click="handleView(scope)"
           />
         </template>
       </el-table-column>
@@ -72,13 +73,27 @@
 <script>
 // import Pagination from '@/components/Pagination'
 import fetchListDivisi from '@/api/divisi'
+import Search from '@/components/Search'
 
 export default {
-  name: 'List',
+  name: 'ListDivisi',
+  components: {
+    Search
+  },
   data() {
     return {
       listDivisi: null,
-      search: ''
+      listQuery: {
+        search: ''
+      }
+    }
+  },
+  watch: {
+    'listQuery.search': {
+      handler: function(value) {
+        console.log(value)
+      },
+      immadiate: true
     }
   },
   mounted() {
@@ -90,16 +105,20 @@ export default {
       this.listDivisi = response.data.items
     },
     // handleEdit(listId) {
-    //   this.$router.push(`/edit/${listId}`)
+    //   this.$router.push(`/editDivisi/${listId}`)
     // },
-    // handleDelete() {
-    // },
-    // handleView() {
-    // },
-    // handleFilter() {
-    // },
+    handleEdit() {
+      this.$router.push('/editDivisi')
+    },
+    handleDelete() {
+    },
+    handleView() {
+      this.$router.push('/detailDivisi')
+    },
+    handleFilter() {
+    },
     handleCreate() {
-      this.$router.push('/form')
+      this.$router.push('/formDivisi')
     }
   }
 }
@@ -116,5 +135,9 @@ export default {
   border-spacing: 0;
   width: 100%;
   border: 1px solid #ddd;
+}
+.filter-container {
+  float: right;
+  width: 200px;
 }
 </style>

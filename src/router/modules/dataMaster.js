@@ -15,36 +15,74 @@ const dataMasterRouter = {
   children: [
     {
       path: '/divisi',
-      component: () => import('@/views/dataMaster/divisi/list'),
+      component: () => import('@/views/dataMaster/divisi/listDivisi'),
       name: 'Divisi',
       meta: {
-        title: 'Divisi'
+        title: 'Divisi',
+        icon: 'table'
       }
     },
     {
-      path: '/form',
-      component: () => import('@/views/dataMaster/divisi/form'),
-      name: 'form',
+      path: '/formDivisi',
+      component: () => import('@/views/dataMaster/divisi/formDivisi'),
+      name: 'FormDivisi',
       meta: {
         title: 'Tambah Divisi'
       },
       hidden: true
     },
     {
-      path: '/edit',
-      component: () => import('@/views/dataMaster/divisi/edit'),
-      name: 'edit',
+      path: '/editDivisi',
+      component: () => import('@/views/dataMaster/divisi/editDivisi'),
+      name: 'EditDivisi',
       meta: {
         title: 'Edit Divisi'
       },
       hidden: true
     },
     {
-      path: '/detail',
-      component: () => import('@/views/dataMaster/divisi/detail'),
-      name: 'detail',
+      path: '/detailDivisi',
+      component: () => import('@/views/dataMaster/divisi/detailDivisi'),
+      name: 'DetailDivisi',
       meta: {
-        title: 'Detail Divisi'
+        title: 'Detail Divisi',
+        icon: 'table'
+      },
+      hidden: true
+    },
+    {
+      path: '/jabatan',
+      component: () => import('@/views/dataMaster/jabatan/listJabatan'),
+      name: 'Jabatan',
+      meta: {
+        title: 'Jabatan',
+        icon: 'table'
+      }
+    },
+    {
+      path: '/formJabatan',
+      component: () => import('@/views/dataMaster/jabatan/formJabatan'),
+      name: 'FormJabatan',
+      meta: {
+        title: 'Tambah Jabatan'
+      },
+      hidden: true
+    },
+    {
+      path: '/editJabatan',
+      component: () => import('@/views/dataMaster/jabatan/editJabatan'),
+      name: 'EditJabatan',
+      meta: {
+        title: 'Edit Jabatan'
+      },
+      hidden: true
+    },
+    {
+      path: '/detailJabatan',
+      component: () => import('@/views/dataMaster/jabatan/detailJabatan'),
+      name: 'DetailJabatan',
+      meta: {
+        title: 'Detail Jabatan'
       },
       hidden: true
     }]

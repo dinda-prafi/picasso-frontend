@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'sapa-jds',
+  title: 'SAPAJDS',
 
   /**
    * @type {boolean} true | false

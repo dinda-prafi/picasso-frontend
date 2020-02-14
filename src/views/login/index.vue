@@ -2,12 +2,12 @@
   <div class="login-container">
     <el-card class="box-card">
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
-        <!-- <img
+        <img
           class="logo"
           alt="Logo sapa-jds"
           src="../../assets/img/logo_jds.png"
           style="width:80%;margin-bottom:40px"
-        > -->
+        >
 
         <el-form-item prop="username">
           <span class="svg-container">
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
 
 export default {
@@ -71,19 +71,17 @@ export default {
   components: { SocialSign },
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Username harus diisi'))
-      // if (value.length < 1) {
+      // if (!validUsername(value)) {
       //   callback(new Error('Username harus diisi'))
+      if (!value.length > 0) {
+        callback(new Error('Username harus diisi'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
+      if (!value.length > 0) {
         callback(new Error('Kata sandi harus diisi'))
-      // if (value.length < 1) {
-      //   callback(new Error('Kata sandi harus diisi'))
       } else {
         callback()
       }
@@ -155,10 +153,10 @@ export default {
               this.loading = false
             })
             .catch(() => {
+              this.$message.error('Username atau kata sandi salah')
               this.loading = false
             })
         } else {
-          alert('Username atau kata sandi salah')
           console.log('error submit!!')
           return false
         }

@@ -7,8 +7,8 @@
       </el-col>
     </el-row>
     <div class="filter-container">
-      <el-form ref="formDivisi" :data="formDivisi" :rules="rules" style="margin: 50px" label-width="150px" label-position="left" class="divisiForm">
-        <el-form-item label="Parent Divisi" class="divisiForm">
+      <el-form ref="formDivisi" :data="formDivisi" :rules="rules" label-width="150px" label-position="left" class="divisiForm">
+        <el-form-item label="Parent Divisi" prop="name_parent" class="divisiForm">
           <el-select v-model="formDivisi.name_parent" placeholder="Pilih Parent Divisi">
             <el-option
               v-for="item in listDivisi"
@@ -26,8 +26,8 @@
           <el-input v-model="formDivisi.deskripsi" type="textarea" />
         </el-form-item>
         <el-form-item>
-          <el-button type="success" @click="handleSave">Save</el-button>
-          <el-button type="danger" @click="handleCancel">Cancel</el-button>
+          <el-button type="success" class="btn" @click="handleSave">Save</el-button>
+          <el-button type="danger" class="btn" @click="handleCancel">Cancel</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -35,22 +35,33 @@
 </template>
 
 <script>
-import { fetchListDivisi, createDivisi } from '@/api/divisi'
-// import createDivisi from '@/api/divisi'
+// import { fetchListDivisi, createDivisi } from '@/api/divisi'
+import fetchListDivisi from '@/api/divisi'
+import createDivisi from '@/api/divisi'
 
 export default {
-  name: 'Form',
+  name: 'FormDivisi',
   data() {
+    // const validateParent = (rule, value, callback) => {
+    //   if (this.formDivisi.name_parent == null) {
+    //     callback(new Error('Pilih salah satu parent divisi!'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     const validateNama = (rule, value, callback) => {
       if (!this.formDivisi.nama_satuan_kerja.length > 0) {
-        callback(new Error('Nama divisi tidak boleh kosong'))
+        callback(new Error('Nama divisi tidak boleh kosong!'))
       } else {
+        if (this.formDivisi.nama_satuan_kerja.length < 3) {
+          callback(new Error('Nama divisi minimal 3 karakter!'))
+        }
         callback()
       }
     }
     const validateDeskripsi = (rule, value, callback) => {
       if (!this.formDivisi.deskripsi.length > 0) {
-        callback(new Error('Deskripsi tidak boleh kosong'))
+        callback(new Error('Deskripsi tidak boleh kosong!'))
       } else {
         callback()
       }
@@ -63,9 +74,10 @@ export default {
         deskripsi: ''
       },
       rules: {
+        // name_parent: [{ required: true, trigger: 'change', validator: validateParent }],
         nama_satuan_kerja: [
-          // { min: 3, message: "Nama divisi minimal 3 karakter",trigger: 'blur' },
           { required: true, trigger: 'blur', validator: validateNama }
+          // { min: 3, message: 'Nama divisi minimal 3 karakter', trigger: 'blur' }
         ],
         deskripsi: [{ required: true, trigger: 'blur', validator: validateDeskripsi }]
       }
@@ -77,7 +89,7 @@ export default {
   methods: {
     async getNamaDivisi() {
       const response = await fetchListDivisi()
-      console.log(response)
+      // console.log(response)
       this.listDivisi = response.data.items
     },
     handleSave() {
@@ -111,6 +123,10 @@ export default {
   color: #97a8be;
 }
 .divisiForm {
+  margin: 40px;
   margin-bottom: 40px;
+}
+.btn {
+  margin-left: 40px;
 }
 </style>
