@@ -1,11 +1,11 @@
 module.exports = {
-  title: 'sapa-jds',
+  title: 'SAPAJDS',
 
   /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel
    */
-  showSettings: true,
+  showSettings: false,
 
   /**
    * @type {boolean} true | false

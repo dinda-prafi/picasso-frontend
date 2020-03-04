@@ -8,6 +8,14 @@ export function login(data) {
   })
 }
 
+export function fetchListUser(params) {
+  return request({
+    url: '/user-list/',
+    method: 'GET',
+    params
+  })
+}
+
 export function getInfo() {
   return request({
     url: '/user-list/',

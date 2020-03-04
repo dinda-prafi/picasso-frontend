@@ -7,11 +7,8 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-// import componentsRouter from './modules/components'
-// import chartsRouter from './modules/charts'
-// import tableRouter from './modules/table'
-import divisiRouter from './modules/divisi'
-
+import dataMasterRouter from './modules/dataMaster'
+import userRouter from './modules/user'
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -32,7 +29,6 @@ import divisiRouter from './modules/divisi'
     activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
   }
  */
-
 /**
  * constantRoutes
  * a base page that does not have permission requirements
@@ -104,7 +100,8 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  divisiRouter,
+  userRouter,
+  dataMasterRouter,
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
