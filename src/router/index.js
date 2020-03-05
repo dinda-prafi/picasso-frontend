@@ -9,6 +9,7 @@ import Layout from '@/layout'
 /* Router Modules */
 import dataMasterRouter from './modules/dataMaster'
 import userRouter from './modules/user'
+
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html

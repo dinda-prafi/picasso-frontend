@@ -6,6 +6,7 @@
         </h2>
       </el-col>
     </el-row>
+
     <FormDivisi :is-edit="true" />
   </div>
 </template>
@@ -20,4 +21,3 @@ export default {
   }
 }
 </script>
-
