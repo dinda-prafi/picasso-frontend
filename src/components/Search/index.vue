@@ -4,7 +4,7 @@
       v-model="valueSearch.search"
       placeholder="Cari"
       class="filter-item"
-      @keyup.enter.native="handleFilter"
+      @keyup.enter.native="handleSearch"
     />
   </form>
 </template>
@@ -15,6 +15,10 @@ export default {
   props: {
     valueSearch: {
       type: Object,
+      default: null
+    },
+    handleSearch: {
+      type: Function,
       default: null
     }
   }

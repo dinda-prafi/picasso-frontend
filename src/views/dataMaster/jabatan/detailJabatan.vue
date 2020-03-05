@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import fetchListJabatan from '@/api/jabatan'
+import { fetchListJabatan } from '@/api/jabatan'
 
 export default {
   name: 'DetailJabatan',

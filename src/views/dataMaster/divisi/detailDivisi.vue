@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import fetchListDivisi from '@/api/divisi'
+import { fetchListDivisi } from '@/api/divisi'
 
 export default {
   name: 'DetailDivisi',
