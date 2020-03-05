@@ -1,34 +1,39 @@
 import request from '@/utils/request'
 
-export default function fetchListDivisi(params) {
+export function fetchListDivisi(params) {
   return request({
-    url: '/mock/satuan-kerja',
-    method: 'get',
+    url: '/satuan-kerja/list',
+    method: 'GET',
     params
   })
 }
 
 export function createDivisi(data) {
   return request({
-    url: '/mock/satuan-kerja/',
-    method: 'post',
+    url: '/satuan-kerja/create',
+    method: 'POST',
     data
   })
 }
 
-export function updateDivisi(params) {
+export function updateDivisi(id, data) {
   return request({
-    url: '/satuan-kerja/?listId=${this.$route.params.id}`',
-    method: 'put',
-    params
+    url: `/satuan-kerja/update/${id}`,
+    method: 'PUT',
+    data
   })
 }
 
-export function deleteDivisi(params) {
+export function detailDivisi(id) {
   return request({
-    url: '/satuan-kerja/',
-    method: 'delete',
-    params
+    url: `/satuan-kerja/detail/${id}`,
+    method: 'GET'
   })
 }
 
+export function removeDivisi(id) {
+  return request({
+    url: `/satuan-kerja/delete/${id}`,
+    method: 'DELETE'
+  })
+}

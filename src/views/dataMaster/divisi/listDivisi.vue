@@ -3,6 +3,7 @@
     <div class="filter-container">
       <search
         :value-search="listQuery"
+        :handle-search="getListDivisi"
       />
       <el-button class="filter-item" type="primary" @click="handleFilter">
         Cari
@@ -12,109 +13,88 @@
       </el-button>
     </div>
 
-    <el-table
-      class="table-divisi"
-      :data="listDivisi"
-      border
-    >
-      <el-table-column
-        align="center"
-        label="No"
-        width="100"
-      >
+    <el-table :data="listDivisi" border stripe fit highlight-current-row>
+      <el-table-column type="index" width="50" align="center" label="#" :index="getTableRowNumbering" />
+
+      <el-table-column prop="name_parent" label="Induk Divisi" min-width="150" />
+
+      <el-table-column prop="name_satuan_kerja" label="Nama Divisi" min-width="150" />
+
+      <el-table-column align="center" label="Actions" min-width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="Parent Divisi"
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.name_parent }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="Nama Divisi"
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.nama_satuan_kerja }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="Aksi"
-      >
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            icon="el-icon-edit"
-            @click="handleEdit(scope.row.id)"
-          />
-          <el-button
-            size="mini"
-            icon="el-icon-delete"
-            @click="handleDelete(scope)"
-          />
-          <el-button
-            size="mini"
-            icon="el-icon-view"
-            @click="handleView(scope)"
-          />
+          <router-link :to="'/editDivisi/' +scope.row.id">
+            <el-button type="white" size="mini">
+              Edit
+            </el-button>
+          </router-link>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">
+            Hapus
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" /> -->
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="getListDivisi"
+    />
   </div>
 </template>
 
 <script>
-// import Pagination from '@/components/Pagination'
-// import fetchListDivisi from '@/api/divisi'
+import Pagination from '@/components/Pagination'
+import { fetchListDivisi, removeDivisi } from '@/api/divisi'
 import Search from '@/components/Search'
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 
 export default {
   name: 'ListDivisi',
   components: {
+    Pagination,
     Search
   },
   data() {
     return {
+      listDivisi: [],
+      total: 0,
       listQuery: {
-        search: ''
+        search: '',
+        page: 1,
+        limit: 10
       }
     }
   },
-  computed: {
-    ...mapGetters(['listDivisi'])
-  },
-  watch: {
-    'listQuery.search': {
-      handler: function(value) {
-        console.log(value)
-      },
-      immadiate: true
-    }
-  },
-  async mounted() {
-    await this.$store.dispatch('divisi/getListDiv', this.listQuery)
+  mounted() {
+    this.getListDivisi()
   },
   methods: {
-    handleEdit(listId) {
-      this.$router.push(`/editDivisi/${listId}`)
+    async getListDivisi() {
+      const response = await fetchListDivisi(this.listQuery)
+      this.listDivisi = response.results
     },
-    handleDelete() {
+    async handleDelete(id) {
+      try {
+        await removeDivisi(id)
+        await this.$message.success('Data Berhasil Dihapus')
+        await this.getListDivisi()
+      } catch (e) {
+        this.$message.success('Data Tidak Berhasil Dihapus')
+      }
     },
     handleView() {
       this.$router.push('/detailDivisi')
     },
     handleFilter() {
+      this.getListDivisi()
     },
     handleCreate() {
       this.$router.push('/formDivisi')
+    },
+    getTableRowNumbering(index) {
+      return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
     }
   }
 }

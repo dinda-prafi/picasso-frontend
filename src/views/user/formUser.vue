@@ -2,21 +2,21 @@
   <div class="app-container">
     <el-row>
       <el-col class="tab">
-        <h2 class="title">Edit Jabatan
+        <h2 class="title">Tambah Hero
         </h2>
       </el-col>
     </el-row>
-    <FormJabatan :is-edit="true" />
+    <FormUser :is-edit="false" />
   </div>
 </template>
 
 <script>
-import FormJabatan from './Form/index'
+import FormUser from './Form/index'
 
 export default {
-  name: 'CreateJabatan',
+  name: 'CreateUser',
   components: {
-    FormJabatan
+    FormUser
   }
 }
 </script>

@@ -32,7 +32,7 @@ const dataMasterRouter = {
       hidden: true
     },
     {
-      path: '/editDivisi',
+      path: '/editDivisi/:id',
       component: () => import('@/views/dataMaster/divisi/editDivisi'),
       name: 'EditDivisi',
       meta: {
@@ -69,7 +69,7 @@ const dataMasterRouter = {
       hidden: true
     },
     {
-      path: '/editJabatan',
+      path: '/editJabatan/:id',
       component: () => import('@/views/dataMaster/jabatan/editJabatan'),
       name: 'EditJabatan',
       meta: {

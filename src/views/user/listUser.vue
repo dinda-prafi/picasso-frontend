@@ -3,7 +3,7 @@
     <div class="filter-container">
       <search
         :value-search="listQuery"
-        :handle-search="getListJabatan"
+        :handle-search="getListDivisi"
       />
       <el-button class="filter-item" type="primary" @click="handleFilter">
         Cari
@@ -13,16 +13,16 @@
       </el-button>
     </div>
 
-    <el-table :data="listJabatan" border stripe fit highlight-current-row>
+    <el-table :data="listDivisi" border stripe fit highlight-current-row>
       <el-table-column type="index" width="50" align="center" label="#" :index="getTableRowNumbering" />
 
-      <el-table-column prop="name_satuan_kerja" label="Divisi" min-width="150" />
+      <el-table-column prop="email" label="Email" min-width="150" />
 
-      <el-table-column prop="name_jabatan" label="Nama Jabatan" min-width="150" />
+      <el-table-column prop="username" label="Username" min-width="150" />
 
       <el-table-column align="center" label="Actions" min-width="150px">
         <template slot-scope="scope">
-          <router-link :to="'/editJabatan/' +scope.row.id">
+          <router-link :to="'/editDivisi/' +scope.row.id">
             <el-button type="white" size="mini">
               Edit
             </el-button>
@@ -33,25 +33,30 @@
         </template>
       </el-table-column>
     </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getListJabatan" />
+
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="getListDivisi"
+    />
   </div>
 </template>
 
 <script>
 import Pagination from '@/components/Pagination'
-import { fetchListJabatan, removeJabatan } from '@/api/jabatan'
-import { fetchListDivisi } from '@/api/divisi'
+import { fetchListUser } from '@/api/user'
 import Search from '@/components/Search'
-
 export default {
-  name: 'ListJabatan',
+  name: 'ListDivisi',
   components: {
     Pagination,
     Search
   },
   data() {
     return {
-      listJabatan: [],
+      listDivisi: [],
       total: 0,
       listQuery: {
         search: '',
@@ -60,38 +65,30 @@ export default {
       }
     }
   },
-  async mounted() {
-    await this.$store.dispatch('jabatan/getListJab', this.listQuery)
-    // this.getListJabatan()
+  mounted() {
+    this.getListUser()
   },
   methods: {
-    async getListJabatan() {
-      const response = await fetchListJabatan(this.listQuery)
-      this.listJabatan = response.results
-    },
-    async getListDivisi() {
-      const response = await fetchListDivisi()
+    async getListUser() {
+      const response = await fetchListUser(this.listQuery)
       this.listDivisi = response.results
-    },
-    handleEdit() {
-      this.$router.push('/editJabatan')
     },
     async handleDelete(id) {
       try {
-        await removeJabatan(id)
         await this.$message.success('Data Berhasil Dihapus')
-        await this.getListDivisi()
+        await this.getListUser()
       } catch (e) {
         this.$message.success('Data Tidak Berhasil Dihapus')
       }
     },
     handleView() {
-      this.$router.push('/detailJabatan')
+      this.$router.push('/detailDivisi')
     },
     handleFilter() {
+      this.getListDivisi()
     },
     handleCreate() {
-      this.$router.push('/formJabatan')
+      this.$router.push('/formUser')
     },
     getTableRowNumbering(index) {
       return ((this.listQuery.page - 1) * this.listQuery.limit) + (index + 1)
@@ -101,19 +98,19 @@ export default {
 </script>
 
 <style>
-.app-container {
-  overflow-x: auto;
-  width: 100%;
-  margin: auto;
-}
-.table-jabatan {
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-  border: 1px solid #ddd;
-}
-.filter-container {
-  float: right;
-  width: 200px;
-}
+    .app-container {
+        overflow-x: auto;
+        width: 100%;
+        margin: auto;
+    }
+    .table-divisi {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+    .filter-container {
+        float: right;
+        width: 200px;
+    }
 </style>
