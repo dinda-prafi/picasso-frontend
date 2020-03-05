@@ -7,7 +7,7 @@
       </el-col>
     </el-row>
     <div class="filter-container">
-      <el-form ref="formJabatan" :data="formJabatan" :rules="rules" label-width="150px" label-position="left" class="jabatanForm">
+      <el-form ref="formJabatan" :model="formJabatan" :rules="rulesJabatan" label-width="150px" label-position="left" class="jabatanForm">
         <el-form-item label="Divisi" prop="satuan_kerja_id" class="jabatanForm">
           <el-select v-model="formJabatan.satuan_kerja_id" placeholder="Pilih Divisi">
             <el-option
@@ -33,7 +33,6 @@
 </template>
 
 <script>
-// import { fetchListJabatan, createJabatan } from '@/api/jabatan'
 import fetchListJabatan from '@/api/jabatan'
 import createJabatan from '@/api/jabatan'
 import fetchListDivisi from '@/api/divisi'
@@ -41,23 +40,23 @@ import fetchListDivisi from '@/api/divisi'
 export default {
   name: 'FormJabatan',
   data() {
-    const validateNama = (rule, value, callback) => {
-      if (!this.formJabatan.nama_jabatan.length > 0) {
-        callback(new Error('Nama jabatan tidak boleh kosong!'))
-      } else {
-        if (this.formJabatan.nama_jabatan.length < 3) {
-          callback(new Error('Nama jabatan minimal 3 karakter!'))
-        }
-        callback()
-      }
-    }
-    const validateDeskripsi = (rule, value, callback) => {
-      if (!this.formJabatan.deskripsi.length > 0) {
-        callback(new Error('Deskripsi tidak boleh kosong!'))
-      } else {
-        callback()
-      }
-    }
+    // const validateNama = (rule, value, callback) => {
+    //   if (!this.formJabatan.nama_jabatan.length > 0) {
+    //     callback(new Error('Nama jabatan tidak boleh kosong!'))
+    //   } else {
+    //     if (this.formJabatan.nama_jabatan.length < 3) {
+    //       callback(new Error('Nama jabatan minimal 3 karakter!'))
+    //     }
+    //     callback()
+    //   }
+    // }
+    // const validateDeskripsi = (rule, value, callback) => {
+    //   if (!this.formJabatan.deskripsi.length > 0) {
+    //     callback(new Error('Deskripsi tidak boleh kosong!'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       listJabatan: null,
       listDivisi: null,
@@ -66,13 +65,13 @@ export default {
         satuan_kerja_id: '',
         deskripsi: ''
       },
-      rules: {
+      rulesJabatan: {
         satuan_kerja_id: [{ required: true, message: 'Pilih salah satu divisi!', trigger: 'blur' }],
         nama_jabatan: [
-          { required: true, trigger: 'blur', validator: validateNama }
-          // { min: 3, message: 'Nama jabatan minimal 3 karakter', trigger: 'blur' }
+          { required: true, message: 'Nama jabatan harus diisi!', trigger: 'blur' },
+          { min: 3, message: 'Nama jabatan minimal 3 karakter', trigger: 'blur' }
         ],
-        deskripsi: [{ required: true, trigger: 'blur', validator: validateDeskripsi }]
+        deskripsi: [{ required: true, message: 'Deskripsi tidak boleh kosong!', trigger: 'blur' }]
       }
     }
   },
@@ -128,5 +127,4 @@ export default {
 .btn {
   margin-left: 40px;
 }
-
 </style>

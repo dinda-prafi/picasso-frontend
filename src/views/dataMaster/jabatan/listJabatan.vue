@@ -1,7 +1,9 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="search" placeholder="Cari Jabatan" class="filter-item" @keyup.enter.native="handleFilter" />
+      <search
+        :value-search="listQuery"
+      />
       <el-button class="filter-item" type="primary" @click="handleFilter">
         Cari
       </el-button>
@@ -70,35 +72,43 @@
 
 <script>
 // import Pagination from '@/components/Pagination'
-import fetchListJabatan from '@/api/jabatan'
-import fetchListDivisi from '@/api/divisi'
-// import Search from '@/components/Search'
+// import fetchListJabatan from '@/api/jabatan'
+import Search from '@/components/Search'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ListJabatan',
-  // components: {
-  //   Search
-  // },
+  components: {
+    Search
+  },
   data() {
     return {
-      listJabatan: null,
-      listDivisi: null,
-      search: ''
+      // listJabatan: null,
+      listQuery: {
+        search: ''
+      }
     }
   },
-  mounted() {
-    this.getListJabatan()
-    this.getListDivisi()
+  computed: {
+    ...mapGetters(['listJabatan'])
+  },
+  watch: {
+    'listQuery.search': {
+      handler: function(value) {
+        console.log(value)
+      },
+      immadiate: true
+    }
+  },
+  async mounted() {
+    await this.$store.dispatch('jabatan/getListJab', this.listQuery)
+    // this.getListJabatan()
   },
   methods: {
-    async getListJabatan() {
-      const response = await fetchListJabatan()
-      this.listJabatan = response.data.items
-    },
-    async getListDivisi() {
-      const response = await fetchListDivisi()
-      this.listDivisi = response.data.items
-    },
+    // async getListJabatan() {
+    //   const response = await fetchListJabatan()
+    //   this.listJabatan = response.data.items
+    // },
     handleEdit() {
       this.$router.push('/editJabatan')
     },

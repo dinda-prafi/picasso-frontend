@@ -7,7 +7,7 @@
       </el-col>
     </el-row>
     <div class="filter-container">
-      <el-form ref="formDivisi" :data="formDivisi" :rules="rules" label-width="150px" label-position="left" class="divisiForm">
+      <el-form ref="formDivisi" :model="formDivisi" :rules="rulesDivisi" label-width="150px" label-position="left" class="divisiForm">
         <el-form-item label="Parent Divisi" prop="name_parent" class="divisiForm">
           <el-select v-model="formDivisi.name_parent" placeholder="Pilih Parent Divisi">
             <el-option
@@ -49,23 +49,23 @@ export default {
     //     callback()
     //   }
     // }
-    const validateNama = (rule, value, callback) => {
-      if (!this.formDivisi.nama_satuan_kerja.length > 0) {
-        callback(new Error('Nama divisi tidak boleh kosong!'))
-      } else {
-        if (this.formDivisi.nama_satuan_kerja.length < 3) {
-          callback(new Error('Nama divisi minimal 3 karakter!'))
-        }
-        callback()
-      }
-    }
-    const validateDeskripsi = (rule, value, callback) => {
-      if (!this.formDivisi.deskripsi.length > 0) {
-        callback(new Error('Deskripsi tidak boleh kosong!'))
-      } else {
-        callback()
-      }
-    }
+    // const validateNama = (rule, value, callback) => {
+    //   if (!this.formDivisi.nama_satuan_kerja.length > 0) {
+    //     callback(new Error('Nama divisi tidak boleh kosong!'))
+    //   } else {
+    //     if (this.formDivisi.nama_satuan_kerja.length < 3) {
+    //       callback(new Error('Nama divisi minimal 3 karakter!'))
+    //     }
+    //     callback()
+    //   }
+    // }
+    // const validateDeskripsi = (rule, value, callback) => {
+    //   if (!this.formDivisi.deskripsi.length > 0) {
+    //     callback(new Error('Deskripsi tidak boleh kosong!'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       listDivisi: null,
       formDivisi: {
@@ -73,13 +73,13 @@ export default {
         nama_satuan_kerja: '',
         deskripsi: ''
       },
-      rules: {
-        // name_parent: [{ required: true, trigger: 'change', validator: validateParent }],
+      rulesDivisi: {
+        name_parent: [{ required: true, message: 'Pilih salah satu parent divisi!', trigger: 'change' }],
         nama_satuan_kerja: [
-          { required: true, trigger: 'blur', validator: validateNama }
-          // { min: 3, message: 'Nama divisi minimal 3 karakter', trigger: 'blur' }
+          { required: true, message: 'Nama divisi tidak boleh kosong!', trigger: 'blur' },
+          { min: 3, message: 'Nama divisi minimal 3 karakter!', trigger: 'blur' }
         ],
-        deskripsi: [{ required: true, trigger: 'blur', validator: validateDeskripsi }]
+        deskripsi: [{ required: true, message: 'Deskripsi tidak boleh kosong!', trigger: 'blur' }]
       }
     }
   },

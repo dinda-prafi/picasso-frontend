@@ -72,8 +72,9 @@
 
 <script>
 // import Pagination from '@/components/Pagination'
-import fetchListDivisi from '@/api/divisi'
+// import fetchListDivisi from '@/api/divisi'
 import Search from '@/components/Search'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ListDivisi',
@@ -82,11 +83,13 @@ export default {
   },
   data() {
     return {
-      listDivisi: null,
       listQuery: {
         search: ''
       }
     }
+  },
+  computed: {
+    ...mapGetters(['listDivisi'])
   },
   watch: {
     'listQuery.search': {
@@ -96,19 +99,12 @@ export default {
       immadiate: true
     }
   },
-  mounted() {
-    this.getListDivisi()
+  async mounted() {
+    await this.$store.dispatch('divisi/getListDiv', this.listQuery)
   },
   methods: {
-    async getListDivisi() {
-      const response = await fetchListDivisi()
-      this.listDivisi = response.data.items
-    },
-    // handleEdit(listId) {
-    //   this.$router.push(`/editDivisi/${listId}`)
-    // },
-    handleEdit() {
-      this.$router.push('/editDivisi')
+    handleEdit(listId) {
+      this.$router.push(`/editDivisi/${listId}`)
     },
     handleDelete() {
     },
