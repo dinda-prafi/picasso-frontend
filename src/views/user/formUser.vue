@@ -6,7 +6,7 @@
         </h2>
       </el-col>
     </el-row>
-    <FormUser :is-edit="false" />
+    <FormUser />
   </div>
 </template>
 

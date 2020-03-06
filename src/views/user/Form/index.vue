@@ -11,20 +11,11 @@
         >
           <el-row>
             <el-col :span="6">
-              <el-upload
-                class="avatar-uploader"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-              >
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon" />
-              </el-upload>
+              <UploadPicture />
             </el-col>
             <el-col :span="18">
               <el-form-item label="NIK" class="userForm">
-                <el-input v-model="formUser.nik" type="text" />
+                <el-input type="text" />
               </el-form-item>
               <el-form-item label="Nama" class="userForm">
                 <el-input v-model="formUser.nama_lengkap" type="text" />
@@ -36,7 +27,6 @@
               </el-form-item>
               <el-form-item label="Tanggal" class="userForm">
                 <el-date-picker
-                  v-model="formUser.date"
                   type="date"
                 />
               </el-form-item>
@@ -61,31 +51,30 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="Tempat Lahir" class="userForm">
-                <el-input v-model="formUser.tempat_lahir" type="text" class="fieldForm" />
+                <el-input type="text" class="fieldForm" />
               </el-form-item>
               <el-form-item label="Tanggal Lahir" class="userForm">
                 <el-date-picker
-                  v-model="formUser.tanggal_lahir"
                   type="date"
                 />
               </el-form-item>
               <el-form-item label="Gender" class="userForm">
-                <el-radio-group v-model="formUser.gender">
+                <el-radio-group>
                   <el-radio label="Laki-laki" />
                   <el-radio label="Perempuan" />
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Status" class="userForm">
-                <el-radio-group v-model="formUser.status">
+                <el-radio-group>
                   <el-radio label="Belum Menikah" />
                   <el-radio label="Menikah" />
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Jumlah Anak" class="userForm">
-                <el-input v-model="formUser.jumlah_anak" type="text" class="fieldForm" />
+                <el-input type="text" class="fieldForm" />
               </el-form-item>
               <el-form-item label="No Hp Aktif" class="userForm">
-                <el-input v-model="formUser.no_ho_aktif" type="text" class="fieldForm" />
+                <el-input type="text" class="fieldForm" />
               </el-form-item>
               <el-form-item label="Email" class="userForm">
                 <el-input v-model="formUser.email" type="text" class="fieldForm" />
@@ -103,19 +92,27 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="Alamat Lengkap" class="userForm">
-                <el-select placeholder="Pilih Provinsi" class="fieldAlamat">
-                  <el-option label="" />
-                </el-select>
-                <el-select placeholder="Pilih Kota/Kab">
-                  <el-option label="" />
-                </el-select>
-                <el-select placeholder="Pilih Kecamatan">
-                  <el-option label="" />
-                </el-select>
-                <el-select placeholder="Pilih Kelurahan">
-                  <el-option label="" />
-                </el-select>
-                <el-input placeholder="Alamat Lengkap" type="textarea" />
+                <el-row>
+                  <el-col :span="12">
+                    <el-select placeholder="Pilih Provinsi" class="fieldAlamat">
+                      <el-option label="" />
+                    </el-select>
+                    <el-select placeholder="Pilih Kecamatan" class="fieldAlamat">
+                      <el-option label="" />
+                    </el-select>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-select placeholder="Pilih Kota/Kab" class="fieldAlamat">
+                      <el-option label="" />
+                    </el-select>
+                    <el-select placeholder="Pilih Kelurahan" class="fieldAlamat">
+                      <el-option label="" />
+                    </el-select>
+                  </el-col>
+                </el-row>
+                <el-row class="fieldAlamat">
+                  <el-input placeholder="Alamat Lengkap" type="textarea" />
+                </el-row>
               </el-form-item>
             </el-col>
           </el-row>
@@ -137,14 +134,12 @@
 import {
   fetchListDivisi
 } from '@/api/divisi'
+import UploadPicture from './upload'
 
 export default {
   name: 'FormUser',
-  props: {
-    isEdit: {
-      type: Boolean,
-      default: false
-    }
+  components: {
+    UploadPicture
   },
   data() {
     return {
@@ -153,8 +148,7 @@ export default {
         email: '',
         nama_lengkap: '',
         username: ''
-      },
-      imageUrl: ''
+      }
     }
   },
   mounted() {
@@ -164,21 +158,6 @@ export default {
     async getNamaDivisi() {
       const response = await fetchListDivisi()
       this.listDivisi = response.results
-    },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('Avatar picture must be JPG format!')
-      }
-      if (!isLt2M) {
-        this.$message.error('Avatar picture size can not exceed 2MB!')
-      }
-      return isJPG && isLt2M
     },
     handleSave() {
 
@@ -192,29 +171,9 @@ export default {
 
 <style>
 .fieldForm {
-  width: 80%;
+  width: 90%;
 }
-.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+.fieldAlamat {
+  margin-bottom: 20px;
+}
 </style>
