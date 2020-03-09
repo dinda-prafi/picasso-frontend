@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import moment from 'moment'
+moment.locale('id')
 
 import Cookies from 'js-cookie'
 
@@ -6,6 +8,7 @@ import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 
 import Element from 'element-ui'
 import './styles/element-variables.scss'
+import VueMoment from 'vue-moment'
 
 import '@/styles/index.scss' // global css
 
@@ -34,6 +37,10 @@ if (process.env.NODE_ENV === 'production') {
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
+})
+
+Vue.use(VueMoment, {
+  moment
 })
 
 // register global utility filters

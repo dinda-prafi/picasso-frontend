@@ -3,6 +3,7 @@
     action="#"
     list-type="picture-card"
     :auto-upload="false"
+    :multiple="false"
   >
     <i slot="default" class="el-icon-plus" />
   </el-upload>

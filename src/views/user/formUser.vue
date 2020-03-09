@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row>
       <el-col class="tab">
-        <h2 class="title">Tambah Hero
+        <h2 class="tab_title">Tambah Hero
         </h2>
       </el-col>
     </el-row>
@@ -20,3 +20,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.tab_title {
+  margin-left: 20px;
+}
+</style>
