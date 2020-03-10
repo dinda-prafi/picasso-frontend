@@ -11,6 +11,12 @@
 
 <script>
 export default {
-  name: 'UploadPicture'
+  name: 'UploadPicture',
+  props: {
+    foto: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>

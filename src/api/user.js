@@ -10,22 +10,52 @@ export function login(data) {
 
 export function fetchListUser(params) {
   return request({
-    url: '/user-list/',
+    url: '/user/',
     method: 'GET',
     params
   })
 }
 
+export function createUser(data) {
+  return request({
+    url: '/user/',
+    method: 'POST',
+    data
+  })
+}
+
+export function updateUser(id, data) {
+  return request({
+    url: `/user/${id}`,
+    method: 'PUT',
+    data
+  })
+}
+
+export function detailUser(id) {
+  return request({
+    url: `/user/${id}`,
+    method: 'GET'
+  })
+}
+
+export function removeUser(id) {
+  return request({
+    url: `/user/${id}`,
+    method: 'DELETE'
+  })
+}
+
 export function getInfo() {
   return request({
-    url: '/user-list/',
+    url: '/user/',
     method: 'get'
   })
 }
 
 export function logout() {
   return request({
-    url: '/vue-element-admin/user/logout',
+    url: '/user/logout',
     method: 'post'
   })
 }

@@ -3,7 +3,7 @@
     <div class="filter-container">
       <search
         :value-search="listQuery"
-        :handle-search="getListDivisi"
+        :handle-search="getListUser"
       />
       <el-button class="filter-item" type="primary" @click="handleFilter">
         Cari
@@ -13,7 +13,7 @@
       </el-button>
     </div>
 
-    <el-table :data="listDivisi" border stripe fit highlight-current-row>
+    <el-table :data="listUser" border stripe fit highlight-current-row>
       <el-table-column type="index" width="50" align="center" label="#" :index="getTableRowNumbering" />
 
       <el-table-column prop="email" label="Email" min-width="150" />
@@ -22,12 +22,12 @@
 
       <el-table-column align="center" label="Actions" min-width="150px">
         <template slot-scope="scope">
-          <router-link :to="'/editDivisi/' +scope.row.id">
+          <router-link :to="'/editUser/' +scope.row.email">
             <el-button type="white" size="mini">
               Edit
             </el-button>
           </router-link>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row.email)">
             Hapus
           </el-button>
         </template>
@@ -39,29 +39,30 @@
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
-      @pagination="getListDivisi"
+      @pagination="getListUser"
     />
   </div>
 </template>
 
 <script>
 import Pagination from '@/components/Pagination'
-import { fetchListUser } from '@/api/user'
+import { fetchListUser, removeUser } from '@/api/user'
 import Search from '@/components/Search'
+
 export default {
-  name: 'ListDivisi',
+  name: 'ListUser',
   components: {
     Pagination,
     Search
   },
   data() {
     return {
-      listDivisi: [],
+      listUser: [],
       total: 0,
       listQuery: {
         search: '',
         page: 1,
-        limit: 10
+        limit: 20
       }
     }
   },
@@ -71,10 +72,11 @@ export default {
   methods: {
     async getListUser() {
       const response = await fetchListUser(this.listQuery)
-      this.listDivisi = response.results
+      this.listUser = response.results
     },
     async handleDelete(id) {
       try {
+        await removeUser(id)
         await this.$message.success('Data Berhasil Dihapus')
         await this.getListUser()
       } catch (e) {
@@ -82,10 +84,10 @@ export default {
       }
     },
     handleView() {
-      this.$router.push('/detailDivisi')
+      this.$router.push('/detailUser')
     },
     handleFilter() {
-      this.getListDivisi()
+      this.getListUser()
     },
     handleCreate() {
       this.$router.push('/formUser')
@@ -98,19 +100,19 @@ export default {
 </script>
 
 <style>
-    .app-container {
-        overflow-x: auto;
-        width: 100%;
-        margin: auto;
-    }
-    .table-divisi {
-        border-collapse: collapse;
-        border-spacing: 0;
-        width: 100%;
-        border: 1px solid #ddd;
-    }
-    .filter-container {
-        float: right;
-        width: 200px;
-    }
+.app-container {
+  overflow-x: auto;
+  width: 100%;
+  margin: auto;
+}
+.table-user {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+.filter-container {
+  float: right;
+  width: 200px;
+}
 </style>

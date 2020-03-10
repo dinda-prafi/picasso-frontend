@@ -12,11 +12,19 @@
         >
           <el-row>
             <el-col :span="6">
-              <UploadPicture v-model="formUser.foto" align="center" class="upload" />
+              <div v-if="imageUrl.length">
+                <img src="imageUrl">
+              </div>
+              <div v-else>
+                <UploadPicture v-model="formUser.foto" align="center" class="upload" />
+              </div>
             </el-col>
             <el-col :span="18">
-              <el-form-item label="NIK">
-                <el-input type="text" />
+              <el-form-item label="Email" prop="email">
+                <el-input v-model="formUser.email" type="text" class="fieldForm" />
+              </el-form-item>
+              <el-form-item label="Username" prop="username">
+                <el-input v-model="formUser.username" type="text" />
               </el-form-item>
               <el-form-item label="Nama" required>
                 <el-col :span="12">
@@ -35,12 +43,11 @@
                       v-model="formUser.last_name"
                       type="text"
                       placeholder="Nama Belakang"
-                      prop="last_name"
                     />
                   </el-form-item>
                 </el-col>
               </el-form-item>
-              <el-form-item label="Divisi">
+              <el-form-item label="Divisi" prop="divisi">
                 <el-select v-model="formUser.divisi" placeholder="Pilih Divisi">
                   <el-option
                     v-for="item in listDivisi"
@@ -50,7 +57,7 @@
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item label="Posisi">
+              <el-form-item label="Posisi" prop="jabatan">
                 <el-select v-model="formUser.jabatan" placeholder="Pilih Jabatan">
                   <el-option
                     v-for="item in listJabatan"
@@ -75,7 +82,7 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="Tempat Lahir">
+              <el-form-item label="Tempat Lahir" prop="tempat_lahir">
                 <el-input v-model="formUser.tempat_lahir" type="text" class="fieldForm" />
               </el-form-item>
               <el-form-item label="Tanggal Lahir">
@@ -90,24 +97,21 @@
                   <el-radio label="Perempuan" />
                 </el-radio-group>
               </el-form-item>
-              <el-form-item label="Status">
+              <el-form-item label="Status" prop="status_pernikahan">
                 <el-radio-group v-model="formUser.status_pernikahan">
                   <el-radio label="Belum Menikah" />
                   <el-radio label="Menikah" />
                 </el-radio-group>
               </el-form-item>
-              <el-form-item label="Jumlah Anak">
+              <el-form-item label="Jumlah Anak" prop="jumlah_anak">
                 <el-input v-model="formUser.jumlah_anak" type="text" class="fieldForm" />
               </el-form-item>
-              <el-form-item label="No Hp Aktif">
+              <el-form-item label="No Hp Aktif" prop="telephone">
                 <el-input v-model="formUser.telephone" type="text" class="fieldForm" />
-              </el-form-item>
-              <el-form-item label="Email" prop="email">
-                <el-input v-model="formUser.email" type="text" class="fieldForm" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="Agama">
+              <el-form-item label="Agama" prop="agama">
                 <el-select v-model="formUser.agama" placeholder="Pilih Agama" class="select">
                   <el-option
                     v-for="item in optionAgama"
@@ -117,7 +121,7 @@
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item label="Golongan Darah">
+              <el-form-item label="Golongan Darah" prop="golongan_darah">
                 <el-select v-model="formUser.golongan_darah" placeholder="Pilih Golongan Darah" class="select">
                   <el-option
                     v-for="item in optionGolDar"
@@ -147,7 +151,9 @@
                   </el-col>
                 </el-row>
                 <el-row>
-                  <el-input v-model="formUser.alamat" placeholder="Alamat Lengkap" type="textarea" />
+                  <el-form-item prop="alamat">
+                    <el-input v-model="formUser.alamat" placeholder="Alamat Lengkap" type="textarea" />
+                  </el-form-item>
                 </el-row>
               </el-form-item>
             </el-col>
@@ -173,6 +179,11 @@ import {
 import {
   fetchListJabatan
 } from '@/api/jabatan'
+import {
+  createUser,
+  updateUser,
+  detailUser
+} from '@/api/user'
 import UploadPicture from './upload'
 
 export default {
@@ -180,10 +191,17 @@ export default {
   components: {
     UploadPicture
   },
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       listDivisi: null,
       listJabatan: null,
+      imageUrl: '',
       formUser: {
         email: '',
         username: '',
@@ -208,18 +226,23 @@ export default {
       userRules: {
         first_name: [{
           required: true,
-          message: 'Nama Depan ini tidak boleh kosong',
+          message: 'Nama Depan tidak boleh kosong',
           trigger: 'blur'
         }],
         last_name: [{
           required: true,
-          message: 'Nama Belakang ini tidak boleh kosong',
+          message: 'Nama Belakang tidak boleh kosong',
           trigger: 'blur'
         }],
         email: [{
           required: true,
           message: 'Email tidak boleh kosong',
           trigger: 'blur'
+        },
+        {
+          type: 'email',
+          message: 'Masukan email yang valid',
+          trigger: ['blur', 'change']
         }]
       },
       optionAgama: [{
@@ -261,6 +284,10 @@ export default {
   mounted() {
     this.getNamaDivisi()
     this.getNamaJabatan()
+    if (this.isEdit) {
+      const id = this.$route.params && this.$route.params.email
+      this.getDetail(id)
+    }
   },
   methods: {
     async getNamaDivisi() {
@@ -271,11 +298,29 @@ export default {
       const response = await fetchListJabatan()
       this.listJabatan = response.results
     },
-    handleSave() {
-
+    async handleSave() {
+      const valid = await this.$refs.formUser.validate()
+      if (valid) {
+        if (this.isEdit) {
+          const id = this.$route.params && this.$route.params.email
+          await updateUser(id, this.formUser)
+        } else {
+          await createUser(this.formUser)
+        }
+        // console.log(this.formUser)
+        this.$message.success('Data Hero Berhasil dimasukkan')
+        this.$router.push('/user')
+      } else {
+        this.$message.error('Data Hero Gagal dimasukkan')
+      }
+      return true
+    },
+    async getDetail(id) {
+      const response = await detailUser(id)
+      Object.assign(this.formUser, response.results)
     },
     handleCancel() {
-      this.$router.push('/hero')
+      this.$router.push('/user')
     }
   }
 }

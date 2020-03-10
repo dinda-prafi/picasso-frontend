@@ -14,9 +14,9 @@ const userRouter = {
   },
   children: [
     {
-      path: '/hero',
+      path: '/user',
       component: () => import('@/views/user/listUser'),
-      name: 'Hero',
+      name: 'User',
       meta: {
         title: 'Hero',
         icon: 'user'
@@ -25,9 +25,27 @@ const userRouter = {
     {
       path: '/formUser',
       component: () => import('@/views/user/formUser'),
-      name: 'formUser',
+      name: 'FormUser',
       meta: {
-        title: 'Tambah User'
+        title: 'Tambah Hero'
+      },
+      hidden: true
+    },
+    {
+      path: '/editUser/:email',
+      component: () => import('@/views/user/editUser'),
+      name: 'EditUser',
+      meta: {
+        title: 'Edit Hero'
+      },
+      hidden: true
+    },
+    {
+      path: '/detailUser',
+      component: () => import('@/views/user/detailUser'),
+      name: 'DetailUser',
+      meta: {
+        title: 'Detail Hero'
       },
       hidden: true
     }
