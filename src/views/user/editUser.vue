@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import FormUser from './Form/index'
+import FormUser from './components/form/index'
 
 export default {
   name: 'EditUser',

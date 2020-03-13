@@ -24,6 +24,14 @@ export function createUser(data) {
   })
 }
 
+export function uploadImage(data) {
+  return request({
+    url: 'https://jsonplaceholder.typicode.com/posts/',
+    method: 'POST',
+    data
+  })
+}
+
 export function updateUser(id, data) {
   return request({
     url: `/user/${id}`,

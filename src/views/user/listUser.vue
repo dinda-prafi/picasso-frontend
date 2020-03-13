@@ -1,39 +1,44 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <search
-        :value-search="listQuery"
-        :handle-search="getListUser"
-      />
-      <el-button class="filter-item" type="primary" @click="handleFilter">
-        Cari
-      </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" @click="handleCreate">
-        Tambah
-      </el-button>
-    </div>
-
-    <el-table :data="listUser" border stripe fit highlight-current-row>
-      <el-table-column type="index" width="50" align="center" label="#" :index="getTableRowNumbering" />
-
-      <el-table-column prop="email" label="Email" min-width="150" />
-
-      <el-table-column prop="username" label="Username" min-width="150" />
-
-      <el-table-column align="center" label="Actions" min-width="150px">
-        <template slot-scope="scope">
-          <router-link :to="'/editUser/' +scope.row.email">
-            <el-button type="white" size="mini">
-              Edit
-            </el-button>
-          </router-link>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row.email)">
-            Hapus
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
+    <el-row class="filter-container">
+      <el-col :span="16">
+        <p> List User </p>
+      </el-col>
+      <el-col :span="4" align="right">
+        <search
+          :value-search="listQuery"
+          :handle-search="getListUser"
+        />
+      </el-col>
+      <el-col :span="2" align="center">
+        <el-button type="primary" @click="handleFilter">
+          Cari
+        </el-button>
+      </el-col>
+      <el-col :span="2">
+        <el-button type="primary" @click="handleCreate">
+          Tambah
+        </el-button>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-table :data="listUser" border stripe fit highlight-current-row>
+        <el-table-column type="index" width="50" align="center" label="No" :index="getTableRowNumbering" />
+        <el-table-column prop="email" label="Email" align="center" min-width="150" />
+        <el-table-column prop="username" label="Username" align="center" min-width="150" />
+        <el-table-column align="center" label="Actions" min-width="150">
+          <template slot-scope="scope">
+            <router-link :to="'/editUser/' +scope.row.email">
+              <el-button type="white" size="mini" icon="el-icon-edit-outline" />
+            </router-link>
+            <el-button type="danger" size="mini" icon="el-icon-delete" @click="handleDelete(scope.row.email)" />
+            <router-link :to="'/detailUser/' +scope.row.email">
+              <el-button type="white" size="mini" icon="el-icon-view" />
+            </router-link>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-row>
     <pagination
       v-show="total>0"
       :total="total"
@@ -98,21 +103,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.app-container {
-  overflow-x: auto;
-  width: 100%;
-  margin: auto;
-}
-.table-user {
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-  border: 1px solid #ddd;
-}
-.filter-container {
-  float: right;
-  width: 200px;
-}
-</style>
